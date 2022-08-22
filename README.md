@@ -1,0 +1,1 @@
+Repositório para fins de estudo do ReactJS 
