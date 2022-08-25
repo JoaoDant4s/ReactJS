@@ -12,6 +12,7 @@ import ExecuteFunction from './components/ExecuteFunction';
 import Message from './components/Message'
 import {useState} from 'react'
 import ChangeMessageState from './components/ChangeMessageState';
+import UserDetails from './components/UserDetails';
 
 function App() {
   const cars = [
@@ -28,6 +29,13 @@ function App() {
   const handleMessage = (msg) => {
     setMessage(msg)
   }
+  const users = [
+    {id: 1, name: "João", age: 20, main: "Akali"},
+    {id: 2, name: "Guga", age: 19, main: "Sion"},
+    {id: 3, name: "Fernando", age: 21, main: "Ezreal"},
+    {id: 4, name: "José", age: 17, main: "Leona"},
+    {id: 5, name: "Thiago", age: 13, main: "Master Yi"}
+  ]
   return (
     <div className="App">
       <h1>Avançando em React</h1>
@@ -63,7 +71,10 @@ function App() {
       {/*State Lift*/}
       <Message msg={message}/>
       <ChangeMessageState handleMessage={handleMessage}/>
-      
+      {/*Desafio*/}
+      {users.map((user) => (
+        <UserDetails key={user.id} name={user.name} age={user.age} main={user.main}/>
+      ))}
     </div>
   );
 }
