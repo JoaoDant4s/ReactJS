@@ -1,19 +1,23 @@
-//2 - links com react router
-import { Link } from "react-router-dom"
+import React from 'react'
+import "./Search.css"
+import {useSearchParams, Link} from "react-router-dom"
 import { useFetch } from "../hooks/useFetch"
 
-import "./Home.css"
-const Home = () => {
-    //3- carregamento de dados
-    const link_url = "http://localhost:3000/champions"
+const Search = () => {
+
+    const [searchParams] = useSearchParams()
+
+    const link_url = "http://localhost:3000/champions?" + searchParams;
+    console.log(searchParams)
 
     const {data: items, loading, error} = useFetch(link_url)
+
   return (
-    <div className="container-content">
-        <h1>Champions</h1>
-        {error && <p>{error}</p>}
-        {loading && <p>Carregando...</p>}
+    <div>
+        <h1>Resultados disponiveis</h1>
         <ul className="champions">
+            {error && <p>{error}</p>}
+            {loading && <p>Loading...</p>}
             {items && items.map(item => (
                 <li key={item.id}
                 className="links-home"
@@ -24,7 +28,6 @@ const Home = () => {
                         <h2>{item.name}</h2>
                         <p>{item.role}</p>
                         <p>{item.class}</p>
-                        {/*4 - rota diâmica*/}
                         <Link to={`/champions/${item.id}`}>Lore</Link>
                     </div>
                 </li>
@@ -34,4 +37,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Search

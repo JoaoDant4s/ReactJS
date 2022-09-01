@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useFetch } from "../hooks/useFetch"
 
 import "./Champions.css"
@@ -21,7 +21,9 @@ const Champions = () => {
         <div className="container-lore">
           <h1>{champion.name}</h1>
           <img src={champion.image} alt={champion.name} />
-          <p className="lore">{champion.lore}</p>
+          <div className="lore">{champion.lore}</div>
+          {/* 5- nested routes */}
+          <Link to={`/champions/${id}/skins`}>Ver skins</Link>
         </div>
       )}
     </>
