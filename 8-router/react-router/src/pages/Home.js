@@ -5,9 +5,9 @@ import { useFetch } from "../hooks/useFetch"
 import "./Home.css"
 const Home = () => {
     //3- carregamento de dados
-    const url = "http://localhost:3000/champions"
+    const link_url = "http://localhost:3000/champions"
 
-    const {data: items, loading, error} = useFetch(url)
+    const {data: items, loading, error} = useFetch(link_url)
   return (
     <div>
         <h1>Champions</h1>
@@ -15,7 +15,13 @@ const Home = () => {
         {loading && <p>Carregando...</p>}
         <ul className="champions">
             {items && items.map(item => (
-                <li key={item.id} className="links-home">
+                <li key={item.id}
+                className="links-home"
+                style={{
+                    backgroundImage: `url(${item.image})`,
+                    backgroundPosition: "top",
+                    backgroundSize: "cover",
+                }}>
                     <h2>{item.name}</h2>
                     <p>{item.role}</p>
                     <p>{item.class}</p>
