@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-
+import "./SearchForm.css"
 const SearchForm = () => {
     const navigate = useNavigate()
     const [query, setQuery] = useState()
@@ -12,8 +12,8 @@ const SearchForm = () => {
     }
   return (
     <form onSubmit={handleSubmit}>
-        <input type="text" onChange={(e) => setQuery(e.target.value)}/>
-        <input type="submit" value="Buscar"/>
+        <input className="search" type="text" onChange={(e) => setQuery(e.target.value)}/>
+        <input className="button" type="submit" value="Buscar"/>
     </form>
   )
 }

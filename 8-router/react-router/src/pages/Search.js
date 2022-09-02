@@ -8,21 +8,20 @@ const Search = () => {
     const [searchParams] = useSearchParams()
 
     const link_url = "http://localhost:3000/champions?" + searchParams;
-    console.log(searchParams)
 
     const {data: items, loading, error} = useFetch(link_url)
 
   return (
-    <div>
+    <div className="container-content">
         <h1>Resultados disponiveis</h1>
         <ul className="champions">
             {error && <p>{error}</p>}
-            {loading && <p>Loading...</p>}
+            {loading}
             {items && items.map(item => (
                 <li key={item.id}
                 className="links-home"
                 style={{
-                    backgroundImage: `linear-gradient(rgba(0,0,0, .8), rgba(87, 84, 84, 0.7)), url(${item.image})`,
+                    backgroundImage: `linear-gradient(rgba(0,0,0, .8), rgba(87, 84, 84, 0.7)), url(${item.image})`
                 }}>
                     <div>
                         <h2>{item.name}</h2>

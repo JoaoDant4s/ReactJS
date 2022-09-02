@@ -16,6 +16,7 @@
     margin: 0 10px;
     background-position: top;
     background-size: cover;
+    margin-bottom: 20px;
 }
 
 @media(max-width: 555px){
@@ -37,8 +38,5 @@
 
 .links-home a:hover {
     color: aqua;
-}
-.container-content {
-    padding-bottom: 430px;
 }
 
