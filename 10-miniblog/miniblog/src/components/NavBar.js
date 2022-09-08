@@ -74,7 +74,17 @@ const NavBar = (props) => {
                 Home
               </Button>
             </NavLink>
-            <NavLink to="/new-post" className="o">
+            <NavLink to="/login" className="o">
+              <Button sx={{ color: '#000' }}>
+                Login
+              </Button>
+            </NavLink>
+            <NavLink to="/register" className="o">
+              <Button sx={{ color: '#000' }}>
+                Register
+              </Button>
+            </NavLink>
+            {/*<NavLink to="/new-post" className="o">
               <Button sx={{ color: '#000' }}>
                 Novo post
               </Button>
@@ -93,7 +103,7 @@ const NavBar = (props) => {
               <Button sx={{ color: '#000' }}>
                 Sair
               </Button>
-            </NavLink>
+            </NavLink>*/}
           </Box>
         </Toolbar>
       </AppBar>
