@@ -11,26 +11,67 @@ import Exit from './pages/Exit/Exit';
 import NotFound from './pages/NotFound/NotFound';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import { AuthProvider } from './context/AuthContext';
 
+import { onAuthStateChanged } from "firebase/auth"
+
+//hooks
+import { useState, useEffect} from "react"
+import { useAuthentication } from "./hooks/useAuthentication"
+import CreatePost from './pages/CreatePost/CreatePost';
 
 function App() {
+  const [user, setUser] = useState(undefined)
+  const {auth} = useAuthentication()
+
+  const loadingUser = user === undefined
+
+  useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      setUser(user)
+    })
+
+  }, [auth])
+
+  if(loadingUser) {
+    return <p>Carregando...</p>;
+  }
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <NavBar />
-          <Routes className="rotas">
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            {/*<Route path="/new-post" element={<NewPost />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/exit" element={<Exit />} />*/}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <div className="margin-bottom"></div>
-        <Footer />
-      </BrowserRouter>
+      <AuthProvider value={{user}}>
+        <BrowserRouter>
+          <NavBar />
+            <Routes className="rotas">
+              <Route path="/" element={<Home />} />
+              <Route 
+                path="/login" 
+                element={!user ? <Login /> : <Navigate to="/"/>} 
+              />
+              <Route 
+                path="/register" 
+                element={!user ? <Register /> : <Navigate to="/" />} 
+              />
+              {/*<Route path="/new-post" element={<NewPost />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/exit" element={<Exit />} />*/}
+              <Route 
+                path="/posts/create" 
+                element={user ? <CreatePost /> : <Navigate to="/login" />} 
+              />
+              <Route 
+                path="/dashboard" 
+                element={user ? <Dashboard /> : <Navigate to="/login" />} 
+              />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <div className="margin-bottom"></div>
+          <Footer />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }

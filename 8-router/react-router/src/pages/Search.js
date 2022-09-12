@@ -2,6 +2,7 @@ import React from 'react'
 import "./Search.css"
 import {useSearchParams, Link} from "react-router-dom"
 import { useFetch } from "../hooks/useFetch"
+import SearchForm from '../components/SearchForm';
 
 const Search = () => {
 
@@ -13,6 +14,7 @@ const Search = () => {
 
   return (
     <div className="container-content">
+        <SearchForm />
         <h1>Resultados disponiveis</h1>
         <ul className="champions">
             {error && <p>{error}</p>}

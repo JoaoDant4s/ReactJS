@@ -11,14 +11,12 @@ import Search from './pages/Search';
 //components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import SearchForm from './components/SearchForm';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Navbar />
-        <SearchForm />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

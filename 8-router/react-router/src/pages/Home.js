@@ -1,7 +1,7 @@
 //2 - links com react router
 import { Link } from "react-router-dom"
 import { useFetch } from "../hooks/useFetch"
-
+import SearchForm from '../components/SearchForm';
 import "./Home.css"
 const Home = () => {
     //3- carregamento de dados
@@ -10,6 +10,7 @@ const Home = () => {
     const {data: items, loading, error} = useFetch(link_url)
   return (
     <div className="container-content">
+        <SearchForm />
         <h1>Champions</h1>
         {error && <p>{error}</p>}
         {loading && <p>Carregando...</p>}

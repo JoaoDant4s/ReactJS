@@ -15,6 +15,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
+import { useAuthentication } from '../hooks/useAuthentication';
+import { useAuthValue } from '../context/AuthContext';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Novo post', 'Dashboard', 'Sobre', 'Sair'];
@@ -47,6 +49,9 @@ const NavBar = (props) => {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const { user } = useAuthValue()
+  const { logout } = useAuthentication()
+
   return (
     <div>
       <Box sx={{ display: 'flex', backgroundColor: 'white' }}>
@@ -74,36 +79,48 @@ const NavBar = (props) => {
                 Home
               </Button>
             </NavLink>
-            <NavLink to="/login" className="o">
-              <Button sx={{ color: '#000' }}>
-                Login
-              </Button>
-            </NavLink>
-            <NavLink to="/register" className="o">
-              <Button sx={{ color: '#000' }}>
-                Register
-              </Button>
-            </NavLink>
-            {/*<NavLink to="/new-post" className="o">
-              <Button sx={{ color: '#000' }}>
-                Novo post
-              </Button>
-            </NavLink>
-            <NavLink to="/dashboard" className="o">
-              <Button sx={{ color: '#000' }}>
-                Dashboard
-              </Button>
-            </NavLink>
+            {!user && (
+              <>
+                <NavLink to="/login" className="o">
+                  <Button sx={{ color: '#000' }}>
+                    Login
+                  </Button>
+                </NavLink>
+                <NavLink to="/register" className="o">
+                  <Button sx={{ color: '#000' }}>
+                    Register
+                  </Button>
+                </NavLink>
+              </>
+            )}
+            {user && (
+              <>
+                <NavLink to="/posts/create" className="o">
+                  <Button sx={{ color: '#000' }}>
+                    Novo post
+                  </Button>
+                </NavLink>
+                <NavLink to="/dashboard" className="o">
+                  <Button sx={{ color: '#000' }}>
+                    Dashboard
+                  </Button>
+                </NavLink>
+              </>
+            )}
             <NavLink to="/about" className="o">
               <Button sx={{ color: '#000' }}>
                 Sobre
               </Button>
             </NavLink>
-            <NavLink to="/exit" className="o">
-              <Button sx={{ color: '#000' }}>
-                Sair
-              </Button>
-            </NavLink>*/}
+            {user && (
+              <>
+                <NavLink to="/exit" className="o">
+                  <Button sx={{ color: '#000' }} onClick={logout}>
+                    Sair
+                  </Button>
+                </NavLink>
+              </>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
