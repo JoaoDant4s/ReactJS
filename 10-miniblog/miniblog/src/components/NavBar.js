@@ -17,13 +17,15 @@ import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
 import { useAuthentication } from '../hooks/useAuthentication';
 import { useAuthValue } from '../context/AuthContext';
+import { useState } from 'react';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Novo post', 'Dashboard', 'Sobre', 'Sair'];
 
 const NavBar = (props) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -95,10 +97,11 @@ const NavBar = (props) => {
             )}
             {user && (
               <>
-                <NavLink to="/posts/create" className="o">
+                <NavLink to="/posts/create" onClick={ () => setIsModalVisible(true) } className="o">
                   <Button sx={{ color: '#000' }}>
                     Novo post
                   </Button>
+                  {/* {isModalVisible ? <CreatePostDialog /> : null} */}
                 </NavLink>
                 <NavLink to="/dashboard" className="o">
                   <Button sx={{ color: '#000' }}>
