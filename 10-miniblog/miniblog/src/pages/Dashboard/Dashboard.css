@@ -3,14 +3,46 @@
     flex-direction: column;
     align-items: center;
     margin-top: 15px;
+    background-color: aliceblue;
+    width: 70%;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px black;
+}
+@media(min-width: 1200px){
+    .dialog-content{
+        width: 50%;
+    }
+}
+@media(min-width: 1500px){
+    .dialog-content{
+        width: 40%;
+    }
 }
 .dialog-title {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
 }
 /* .dialog-post .MuiDialog-paper {
     width: 100%;
 } */
+.box-content {
+    margin: 15px;
+    width: 90%;
+}
+.dialog-post{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .button-container {
     margin-top: 30px;
+}
+.box-justify-form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
