@@ -4,14 +4,16 @@ import './Dashboard.css'
 import { Box } from '@mui/system'
 import { useInsertDocument } from '../../hooks/useInsertDocument'
 import { useAuthValue } from '../../context/AuthContext'
+import { useNavigate } from "react-router-dom";
+
 const Dashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [title, setTitle] = useState("")
   const [urlImage, setUrlImage] = useState("")
   const [content, setContent] = useState("")
-  const [tags, setTags] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(null)
+  const [tags, setTags] = useState([])
+  const [formError, setError] = useState("")
+  const navigate = useNavigate()
   // const handleVisible = () => {
   //   setIsModalVisible(true)
   // }
@@ -21,31 +23,52 @@ const Dashboard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setError("")
-
+    let failed = false
     //validate image URL
+    try {
+      new URL(urlImage);
+    } catch (error) {
+
+      failed = true
+      console.log("A IMAGEM PRECISA SER UMA URL")
+      setError("A imagem precisa ser uma URL.");
+      setUrlImage("")
+      console.log(failed)
+    }
 
     //criar array de tags
-
+    const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase())
     //checar todos os valores
-    console.log({
-      title,
-      urlImage,
-      content,
-      tags,
-      uid: user.uid,
-      createdBy: user.displayName
-    })
+    
+    if(!title || !urlImage || !tags || !content){
+      setError("Por favor, preencha todos os campos.")
+    }
 
-    insertDocument({
-      title,
-      urlImage,
-      content,
-      tags,
-      uid: user.uid,
-      createdBy: user.displayName
-    })
+    if(!failed){
+      setError("")
+      console.log({
+        title,
+        urlImage,
+        content,
+        tagsArray,
+        uid: user.uid,
+        createdBy: user.displayName
+      })
 
+      insertDocument({
+        title,
+        urlImage,
+        content,
+        tagsArray,
+        uid: user.uid,
+        createdBy: user.displayName
+      })
+      setTitle("")
+      setUrlImage("")
+      setContent("")
+      setTags([])
+      //navigate("/")
+    }
     //redirect to home page
   }
   return (
@@ -135,6 +158,9 @@ const Dashboard = () => {
                       value={tags}
                       onChange={(e) => setTags(e.target.value)}
                     />
+                    {(response.error || formError) && (
+                    <p className="error">{response.error || formError}</p>
+                    )}
                   </Grid>
                 </Grid>
               </Box>
