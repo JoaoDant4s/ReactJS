@@ -57,10 +57,10 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/about" element={<About />} />
               <Route path="/exit" element={<Exit />} />*/}
-              <Route 
+              {/* <Route 
                 path="/posts/create" 
                 element={user ? <CreatePost /> : <Navigate to="/login" />} 
-              />
+              /> */}
               <Route 
                 path="/dashboard" 
                 element={user ? <Dashboard /> : <Navigate to="/login" />} 

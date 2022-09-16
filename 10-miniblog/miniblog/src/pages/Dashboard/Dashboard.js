@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { Button, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, Modal, TextField, Typography } from '@mui/material'
+import { Button, Grid, Modal, TextField, Typography } from '@mui/material'
 import './Dashboard.css' 
 import { Box } from '@mui/system'
+import { useInsertDocument } from '../../hooks/useInsertDocument'
+import { useAuthValue } from '../../context/AuthContext'
 const Dashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [title, setTitle] = useState("")
@@ -13,10 +15,39 @@ const Dashboard = () => {
   // const handleVisible = () => {
   //   setIsModalVisible(true)
   // }
-  const handleSubmit = (e) => {
-    e.prevent.default()
-  }
+  const {user} = useAuthValue()
 
+  const {insertDocument, response} = useInsertDocument("posts")
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setError("")
+
+    //validate image URL
+
+    //criar array de tags
+
+    //checar todos os valores
+    console.log({
+      title,
+      urlImage,
+      content,
+      tags,
+      uid: user.uid,
+      createdBy: user.displayName
+    })
+
+    insertDocument({
+      title,
+      urlImage,
+      content,
+      tags,
+      uid: user.uid,
+      createdBy: user.displayName
+    })
+
+    //redirect to home page
+  }
   return (
     <div>
       <Button variant="outlined" onClick={ () => setIsModalVisible(true) }>Open Modal</Button>
@@ -29,7 +60,13 @@ const Dashboard = () => {
           aria-describedby="modal-modal-description"
         >
           <Box className='dialog-content'>
-            <Box className="box-content">
+            <Box 
+              className="box-content"
+              component="form"
+              validate="true"
+              autoComplete='off'
+              onSubmit={handleSubmit}
+            >
               <Box className='dialog-title'>
                 <Typography variant="h4" id="modal-modal-title">Criar Post</Typography>
                 <Typography id="modal-modal-description" sx={{marginBottom: "30px"}}>
@@ -110,14 +147,14 @@ const Dashboard = () => {
                 >
                   VOLTAR
                 </Button>
-                {!loading && <Button
+                {!response.loading && <Button
                                 variant="contained"
                                 type="submit"
                                 className='button-submit'
                               >
                                 Cadastrar
                               </Button>}
-                {loading && <Button
+                {response.loading && <Button
                               variant="contained"
                               type="submit"
                               className='button-submit'
@@ -125,7 +162,7 @@ const Dashboard = () => {
                             >
                               Aguarde...
                             </Button>}
-                {error && <p className="error">{error}</p>}
+                {response.error && <p className="error">{response.error}</p>}
               </Grid>
             </Box>
           </Box>        

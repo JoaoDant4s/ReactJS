@@ -34,7 +34,7 @@ const NavBar = (props) => {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        <span className='logo-span'>Mini <span className='strong'>BLOG</span></span>
       </Typography>
       <Divider />
       <List>
@@ -97,12 +97,12 @@ const NavBar = (props) => {
             )}
             {user && (
               <>
-                <NavLink to="/posts/create" onClick={ () => setIsModalVisible(true) } className="o">
+                {/* <NavLink to="/posts/create" onClick={ () => setIsModalVisible(true) } className="o">
                   <Button sx={{ color: '#000' }}>
                     Novo post
                   </Button>
-                  {/* {isModalVisible ? <CreatePostDialog /> : null} */}
-                </NavLink>
+                   {isModalVisible ? <CreatePostDialog /> : null} 
+                </NavLink> */}
                 <NavLink to="/dashboard" className="o">
                   <Button sx={{ color: '#000' }}>
                     Dashboard
