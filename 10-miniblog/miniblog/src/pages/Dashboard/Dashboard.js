@@ -13,10 +13,7 @@ const Dashboard = () => {
   const [content, setContent] = useState("")
   const [tags, setTags] = useState([])
   const [formError, setError] = useState("")
-  const navigate = useNavigate()
-  // const handleVisible = () => {
-  //   setIsModalVisible(true)
-  // }
+  
   const {user} = useAuthValue()
 
   const {insertDocument, response} = useInsertDocument("posts")
