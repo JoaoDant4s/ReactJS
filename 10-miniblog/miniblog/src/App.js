@@ -53,6 +53,10 @@ function App() {
                 path="/register" 
                 element={!user ? <Register /> : <Navigate to="/" />}
               />
+              <Route 
+                path="/search" 
+                element={!user ? <Login /> : <Navigate to="/"/>} 
+              />
               {/*<Route path="/new-post" element={<NewPost />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/about" element={<About />} />

@@ -4,16 +4,21 @@ import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react"
 import { Box } from '@mui/system'
 import { Button, Typography } from "@mui/material"
+import { useFetchDocuments } from "../../hooks/useFetchDocuments"
+import PostDetail from "../../components/PostDetail"
+
 
 // components
 
-
 const Home = () => {
   const [query, setQuery] = useState("")
-  const [posts, setPosts] = useState([])
+  const { documents: posts, loading } = useFetchDocuments("posts");
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    // if(query) {
+    //   return Navigate(`/search?q=${query}`)
+    // }
   }
   return (
     <div className={styles.home}>
@@ -27,7 +32,10 @@ const Home = () => {
         <button className="btn btn-dark">Pesquisar</button>
       </form>
       <Box>
-        <Typography variant="h4">Posts...</Typography>
+        {loading && <p>Carregando...</p>}
+        {posts && posts.map((post) => (
+          <PostDetail key={post.id} post={post} />
+        ))}
         {posts && posts.length === 0 && (
           <div className={styles.noposts}>
             <p>Nenhum post encontrado</p>
