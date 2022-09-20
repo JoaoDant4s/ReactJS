@@ -172,7 +172,7 @@ const PostModal = () => {
                 <Button
                   sx={{marginRight: "15px", paddingLeft: "10px"}}
                   variant="outlined"
-                  onClick={ 
+                  onClick={
                     () => {
                         setIsModalVisible(false); 
                         setSuccess(false);

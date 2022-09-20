@@ -7,18 +7,20 @@ import { Button, Typography } from "@mui/material"
 import { useFetchDocuments } from "../../hooks/useFetchDocuments"
 import PostDetail from "../../components/PostDetail"
 
-
 // components
 
 const Home = () => {
   const [query, setQuery] = useState("")
   const { documents: posts, loading } = useFetchDocuments("posts");
+
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    // if(query) {
-    //   return Navigate(`/search?q=${query}`)
-    // }
+    console.log(query)
+    if(query) {
+      return navigate(`/search?q=${query}`)
+    }
   }
   return (
     <div className={styles.home}>
@@ -33,9 +35,6 @@ const Home = () => {
       </form>
       <Box>
         {loading && <p>Carregando...</p>}
-        {posts && posts.map((post) => (
-          <PostDetail key={post.id} post={post} />
-        ))}
         {posts && posts.length === 0 && (
           <div className={styles.noposts}>
             <p>Nenhum post encontrado</p>
@@ -48,6 +47,9 @@ const Home = () => {
             </Link>
           </div>
         )}
+        {posts && posts.map((post) => (
+          <PostDetail key={post.id} post={post} />
+        ))}
       </Box>
     </div>
   )

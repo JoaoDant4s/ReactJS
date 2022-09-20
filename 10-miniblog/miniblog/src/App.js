@@ -19,6 +19,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import { useState, useEffect} from "react"
 import { useAuthentication } from "./hooks/useAuthentication"
 import CreatePost from './pages/CreatePost/CreatePost';
+import Search from './pages/Search/Search';
 
 function App() {
   const [user, setUser] = useState(undefined)
@@ -45,6 +46,7 @@ function App() {
           <NavBar />
             <Routes className="rotas">
               <Route path="/" element={<Home />} />
+              <Route path="/search" element={<Search />} />
               <Route 
                 path="/login" 
                 element={!user ? <Login /> : <Navigate to="/"/>} 
@@ -52,10 +54,6 @@ function App() {
               <Route 
                 path="/register" 
                 element={!user ? <Register /> : <Navigate to="/" />}
-              />
-              <Route 
-                path="/search" 
-                element={!user ? <Login /> : <Navigate to="/"/>} 
               />
               {/*<Route path="/new-post" element={<NewPost />} />
               <Route path="/dashboard" element={<Dashboard />} />
