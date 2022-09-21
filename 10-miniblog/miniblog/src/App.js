@@ -20,6 +20,7 @@ import { useState, useEffect} from "react"
 import { useAuthentication } from "./hooks/useAuthentication"
 import CreatePost from './pages/CreatePost/CreatePost';
 import Search from './pages/Search/Search';
+import SinglePost from './pages/SinglePost/SinglePost';
 
 function App() {
   const [user, setUser] = useState(undefined)
@@ -47,6 +48,7 @@ function App() {
             <Routes className="rotas">
               <Route path="/" element={<Home />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/posts/:id" element={<SinglePost />} />
               <Route 
                 path="/login" 
                 element={!user ? <Login /> : <Navigate to="/"/>} 

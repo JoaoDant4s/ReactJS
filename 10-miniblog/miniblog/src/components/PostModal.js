@@ -16,6 +16,11 @@ const PostModal = () => {
   const {user} = useAuthValue()
   const {insertDocument, response} = useInsertDocument("posts")
 
+  const clearState = () => {
+    setIsModalVisible(false); 
+    setSuccess(false);
+    setError("")
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
     let failed = false
@@ -69,16 +74,11 @@ const PostModal = () => {
   }
   return (
     <div>
-      <Button variant="outlined" onClick={ () => setIsModalVisible(true) }>Open Modal</Button>
+      <Button variant="contained" onClick={ () => setIsModalVisible(true) }>Criar post</Button>
       {isModalVisible ?
         <Modal
           open={isModalVisible}
-          onClose={ () => {
-                setIsModalVisible(false); 
-                setSuccess(false);
-                setError("")
-            }
-          }
+          onClose={clearState}
           className="dialog-post"
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -172,13 +172,7 @@ const PostModal = () => {
                 <Button
                   sx={{marginRight: "15px", paddingLeft: "10px"}}
                   variant="outlined"
-                  onClick={
-                    () => {
-                        setIsModalVisible(false); 
-                        setSuccess(false);
-                        setError("")
-                    }
-                  }
+                  onClick={clearState}
                   className='button-close'
                 >
                   VOLTAR

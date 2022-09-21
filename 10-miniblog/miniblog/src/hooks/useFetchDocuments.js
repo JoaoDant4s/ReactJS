@@ -21,7 +21,8 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
             setLoading(true)
 
             const collectionRef =  collection(db, docCollection);
-
+            console.log(collectionRef)
+            
             try {
                 let q;
 
@@ -32,11 +33,12 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
                             orderBy("createdAt", "desc")
                         );
                 } else if (uid) {
-                q = query(
-                        collectionRef,
-                        where("uid", "==", uid),
-                        orderBy("createdAt", "desc")
-                    );
+                    q = query(
+                            collectionRef,
+                            where("uid", "==", uid),
+                            orderBy("createdAt", "desc")
+                        );
+                        console.log(q)
                 } else {
                     q = query(collectionRef, orderBy("createdAt", "desc"));
                 }
