@@ -25,10 +25,6 @@ const Home = () => {
   return (
     <div className={styles.home}>
       <h2>Veja os posts mais recentes</h2>
-      <h2>Veja os posts mais recentes</h2>
-      <h2>Veja os posts mais recentes</h2>
-      <h2>Veja os posts mais recentes</h2>
-      <h2>Veja os posts mais recentes</h2>
       <form onSubmit={handleSubmit} className={styles.search_form}>
         <input 
           type="text" 
