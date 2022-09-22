@@ -21,6 +21,8 @@ import { useAuthentication } from "./hooks/useAuthentication"
 import CreatePost from './pages/CreatePost/CreatePost';
 import Search from './pages/Search/Search';
 import SinglePost from './pages/SinglePost/SinglePost';
+import Box from '@mui/material/Box'
+import { Grid } from '@mui/material';
 
 function App() {
   const [user, setUser] = useState(undefined)
@@ -72,7 +74,6 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <div className="margin-bottom"></div>
           <Footer />
         </BrowserRouter>
       </AuthProvider>

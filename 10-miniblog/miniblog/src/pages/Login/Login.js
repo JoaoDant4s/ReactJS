@@ -56,7 +56,7 @@ const Login = () => {
         event.preventDefault();
     };
   return (
-    <div className="content-register">
+    <div className="content-login">
       <h1>Entrar</h1>
       <p>Faça login para utilizar o sistema</p>
         <Grid container justifyContent="center" className='form-container'>

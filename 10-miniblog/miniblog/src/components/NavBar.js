@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuthentication } from '../hooks/useAuthentication';
 import { useAuthValue } from '../context/AuthContext';
 import { useState } from 'react';
@@ -68,13 +68,15 @@ const NavBar = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ /*flexGrow: 1,*/ display: { xs: 'none', sm: 'block' }, color: 'black' }}
-          >
-            <span className='logo-span'>Mini <span className='strong'>BLOG</span></span>
-          </Typography>
+          <Link to="/" className="o">
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' }, color: 'black' }}
+            >
+              <span className='logo-span'>Mini <span className='strong'>BLOG</span></span>
+            </Typography>
+          </Link>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             <NavLink to="/" className="o">
               <Button sx={{ color: '#000' }}>
@@ -117,11 +119,11 @@ const NavBar = (props) => {
             </NavLink>
             {user && (
               <>
-                <NavLink to="/exit" className="o">
+                <Link to="/" className="o">
                   <Button sx={{ color: '#000' }} onClick={logout}>
                     Sair
                   </Button>
-                </NavLink>
+                </Link>
               </>
             )}
           </Box>

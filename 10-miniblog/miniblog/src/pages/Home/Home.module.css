@@ -4,7 +4,9 @@
     align-items: center;
     justify-content: center;
 }
-  
+.home h2 {
+    margin-bottom: 25px;
+}
 .search_form {
     max-width: 100%;
     width: 60%;

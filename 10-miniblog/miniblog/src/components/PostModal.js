@@ -30,10 +30,8 @@ const PostModal = () => {
     } catch (error) {
 
       failed = true
-      console.log("A IMAGEM PRECISA SER UMA URL")
       setError("A imagem precisa ser uma URL.");
       setUrlImage("")
-      console.log(failed)
     }
 
     //criar array de tags
@@ -46,14 +44,14 @@ const PostModal = () => {
 
     if(!failed){
       setError("")
-      console.log({
-        title,
-        urlImage,
-        content,
-        tagsArray,
-        uid: user.uid,
-        createdBy: user.displayName
-      })
+      // console.log({
+      //   title,
+      //   urlImage,
+      //   content,
+      //   tagsArray,
+      //   uid: user.uid,
+      //   createdBy: user.displayName
+      // })
 
       insertDocument({
         title,
@@ -126,7 +124,8 @@ const PostModal = () => {
                     <TextField
                       required
                       id="standard-required2"
-                      placeholder="Insira uma imagem"
+                      placeholder="Insira a URL de uma imagem"
+                      multiline
                       type="text"
                       variant="standard"
                       sx={{width: "100%"}}

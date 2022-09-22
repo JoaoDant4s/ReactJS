@@ -17,9 +17,10 @@ const Dashboard = () => {
   const {documents: posts, loading} = useFetchDocuments("posts", null, uid)
 
   return (
-    <div>
+    <div className='dashboard-container'>
       <h2>Dashboard</h2>
       <p>Gerencie ou crie os seus posts</p>
+      <PostModal />
       {posts && posts.length === 0 ? (
         <Box>
           <p>Não foram econtrados posts</p>
@@ -33,7 +34,6 @@ const Dashboard = () => {
       {posts && posts.map((post) => (
         <h3 key={post.title}>{post.title}</h3>
       ))}
-      <PostModal />
     </div>
   )
 }
