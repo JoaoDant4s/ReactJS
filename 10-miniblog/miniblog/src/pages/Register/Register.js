@@ -69,7 +69,7 @@ const Register = () => {
             sx={{width: "60%"}}
             onSubmit={handleSubmit}
             >
-                <Grid container flexDirection="column" rowSpacing={4}>
+                <Grid container flexDirection="column" rowSpacing={2}>
                     <Grid item>
                         <TextField
                         required

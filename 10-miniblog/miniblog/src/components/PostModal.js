@@ -15,6 +15,7 @@ const PostModal = () => {
   const [success, setSuccess] = useState(false)
   const {user} = useAuthValue()
   const {insertDocument, response} = useInsertDocument("posts")
+  const [isValidImage, setIsValidImage] = useState(false)
 
   const clearState = () => {
     setIsModalVisible(false); 
@@ -34,15 +35,34 @@ const PostModal = () => {
       setUrlImage("")
     }
 
+    if(!failed) {
+      fetch(urlImage).then(res => {
+        if(res.status === 404) {
+          failed = true
+          setError("Erro ao analisar a imagem")
+        }
+        else {
+          console.log("res status: " + res.status)
+          setIsValidImage(true)
+          console.log("dentro do else: " + isValidImage)
+        }
+      })
+      .catch(err => {
+        setIsValidImage(false)
+        console.log("dentro do catch: " + isValidImage)
+        setError("A URL não é de uma imagem")
+        console.log(err)
+      })
+    }
     //criar array de tags
     const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase())
     //checar todos os valores
-    
+    console.log(isValidImage)
     if(!title || !urlImage || !tags || !content){
       setError("Por favor, preencha todos os campos.")
     }
-
-    if(!failed){
+    console.log(isValidImage)
+    if(!failed && isValidImage){
       setError("")
       // console.log({
       //   title,
@@ -67,6 +87,7 @@ const PostModal = () => {
       setTags([])
       //navigate("/")
       setSuccess(true)
+      setIsValidImage(false)
     }
     //redirect to home page
   }
@@ -125,7 +146,6 @@ const PostModal = () => {
                       required
                       id="standard-required2"
                       placeholder="Insira a URL de uma imagem"
-                      multiline
                       type="text"
                       variant="standard"
                       sx={{width: "100%"}}
