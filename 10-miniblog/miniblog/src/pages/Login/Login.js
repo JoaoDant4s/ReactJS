@@ -1,6 +1,6 @@
-import styles from "./Login.module.css"
+
 import './Login.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'; // Grid version 1
@@ -8,12 +8,13 @@ import { Button, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useAuthentication } from "../../hooks/useAuthentication"
+import { account } from '../../appwrite/appwriteConfig';
+import { useNavigate } from "react-router-dom"
+import { AuthContextUser } from "../../context/AuthContextUser"
 
 const Login = () => {
-  const [displayName, setDisplayName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(null)
     const [values, setValues] = useState({
@@ -21,30 +22,33 @@ const Login = () => {
         showPassword: false
     })
     const { login, error: authError, loading_res } = useAuthentication();
-    
+    const {userAuth, setUserAuth} = useContext(AuthContextUser)
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
       e.preventDefault()
       setLoading(true)
       setError("")
-      const user = {
-          displayName,
-          email,
-          password
-      }
 
-      const res = await login(user)
-      setLoading(loading_res);
-      console.log(res)
-      console.log("FUNCIONA!")
+      try{
+        await account.createEmailSession(email, password);
+        setUserAuth(true)
+        navigate("/")
+      } catch(error){
+        setUserAuth(false)
+        console.log(error)
+        console.log("Deu bigode ao logar, chefia")
+      }
+      setLoading(false);
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if(authError){
-            setError(authError)
-        }
+    //     if(authError){
+    //         setError(authError)
+    //     }
 
-    }, [authError]);
+    // }, [authError]);
 
     const handleClickShowPassword = () => {
         setValues({

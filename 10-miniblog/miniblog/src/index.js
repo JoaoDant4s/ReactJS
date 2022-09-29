@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { AuthContextUserProvider } from './context/AuthContextUser';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthContextUserProvider>
+      <App />
+    </AuthContextUserProvider>
   </React.StrictMode>
 );
 

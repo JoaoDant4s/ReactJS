@@ -1,5 +1,5 @@
 import './Register.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'; // Grid version 1
@@ -7,6 +7,11 @@ import { Button, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useAuthentication } from "../../hooks/useAuthentication"
+//appwrite
+import { ID } from "appwrite"
+import { account } from '../../appwrite/appwriteConfig';
+import { useNavigate } from 'react-router-dom'
+
 const Register = () => {
     const [displayName, setDisplayName] = useState("")
     const [email, setEmail] = useState("")
@@ -18,7 +23,8 @@ const Register = () => {
         passwordToShow: "",
         showPassword: false
     })
-    const { createUser, error: authError, loading_res } = useAuthentication();
+    const navigate = useNavigate();
+    //const { createUser, error: authError, loading_res } = useAuthentication();
     
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -29,24 +35,35 @@ const Register = () => {
             email,
             password
         }
-
+        // const navigate = useNavigate();
+        const createdUser = account.create(
+            ID.unique(), 
+            user.email, 
+            user.password, 
+            user.displayName)
+        .then(response => {
+            console.log("aaaaaaaaa")
+            account.createEmailSession(user.email, user.password);
+            console.log("loguei")
+            navigate("/login") //usuario criado
+        }).catch(error => {
+            console.log("nao consegui logar, craque")
+            console.log(error);
+        });
+        console.log(createdUser)
         if(password !== confirmPassword){
             setError("As senhas precisam ser iguais!")
             return
         }
-        const res = await createUser(user)
-        setLoading(loading_res);
-        console.log(res)
-        console.log("FUNCIONA!")
+        setLoading(false);
     }
+    // useEffect(() => {
 
-    useEffect(() => {
+    //     if(authError){
+    //         setError(authError)
+    //     }
 
-        if(authError){
-            setError(authError)
-        }
-
-    }, [authError]);
+    // }, [authError]);
 
     const handleClickShowPassword = () => {
         setValues({

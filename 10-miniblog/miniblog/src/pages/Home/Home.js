@@ -3,7 +3,7 @@ import styles from "./Home.module.css"
 import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react"
 import { Box } from '@mui/system'
-import { Button, Typography } from "@mui/material"
+import { Button } from "@mui/material"
 import { useFetchDocuments } from "../../hooks/useFetchDocuments"
 import PostDetail from "../../components/PostDetail"
 
