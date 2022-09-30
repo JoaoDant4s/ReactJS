@@ -1,6 +1,5 @@
 import './NavBar.css'
 
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -16,17 +15,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuthentication } from '../hooks/useAuthentication';
-import { useAuthValue } from '../context/AuthContext';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContextUser } from '../context/AuthContextUser';
 
-const drawerWidth = 240;
-const navItems = ['Home', 'Novo post', 'Dashboard', 'Sobre', 'Sair'];
 
 const NavBar = (props) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const drawerWidth = 240;
+  const navItems = ['Home', 'Novo post', 'Dashboard', 'Sobre', 'Sair', 'Context'];
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const { userAuth } = useContext(AuthContextUser)
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -51,7 +49,6 @@ const NavBar = (props) => {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
-  const { user } = useAuthValue()
   const { logout } = useAuthentication()
 
   return (
@@ -83,7 +80,7 @@ const NavBar = (props) => {
                 Home
               </Button>
             </NavLink>
-            {!user && (
+            {!userAuth && (
               <>
                 <NavLink to="/login" className="o">
                   <Button sx={{ color: '#000' }}>
@@ -97,14 +94,8 @@ const NavBar = (props) => {
                 </NavLink>
               </>
             )}
-            {user && (
+            {userAuth && (
               <>
-                {/* <NavLink to="/posts/create" onClick={ () => setIsModalVisible(true) } className="o">
-                  <Button sx={{ color: '#000' }}>
-                    Novo post
-                  </Button>
-                   {isModalVisible ? <CreatePostDialog /> : null} 
-                </NavLink> */}
                 <NavLink to="/dashboard" className="o">
                   <Button sx={{ color: '#000' }}>
                     Dashboard
@@ -117,7 +108,7 @@ const NavBar = (props) => {
                 Sobre
               </Button>
             </NavLink>
-            {user && (
+            {userAuth && (
               <>
                 <Link to="/" className="o">
                   <Button sx={{ color: '#000' }} onClick={logout}>
@@ -126,6 +117,9 @@ const NavBar = (props) => {
                 </Link>
               </>
             )}
+            {/* <Button sx={{ color: '#000'}} onClick={() => console.log(userAuth)}>
+              Context
+            </Button> */}
           </Box>
         </Toolbar>
       </AppBar>

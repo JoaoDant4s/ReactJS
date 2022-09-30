@@ -10,29 +10,29 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import { AuthProvider } from './context/AuthContext';
 
-import { onAuthStateChanged } from "firebase/auth"
-
 //hooks
-import { useState, useEffect, useContext} from "react"
-import { useAuthentication } from "./hooks/useAuthentication"
+import { useState, useEffect, useContext } from "react"
 import Search from './pages/Search/Search';
 import SinglePost from './pages/SinglePost/SinglePost';
-
+import { AuthContextUser } from './context/AuthContextUser';
+import { account } from './appwrite/appwriteConfig';
 
 
 function App() {
-  const [user, setUser] = useState(undefined)
-  const {auth} = useAuthentication()
-
-  const loadingUser = user === undefined
+  const [user] = useState(undefined)
+  const { userAuth, setUserAuth } = useContext(AuthContextUser)
+  const loadingUser = userAuth === null
 
   useEffect(() => {
+    setUserAuth(account.getSession('current'))
+    //console.log(account.getSession('current'))
+  }, [])
 
-    onAuthStateChanged(auth, (user) => {
-      setUser(user)
-    })
-
-  }, [auth])
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     setUser(user);
+  //   });
+  // }, [auth]);
 
   if(loadingUser) {
     return <p>Carregando...</p>;
@@ -49,15 +49,15 @@ function App() {
               <Route path="/posts/:id" element={<SinglePost />} />
               <Route 
                 path="/login" 
-                element={!user ? <Login /> : <Navigate to="/"/>} 
+                element={!userAuth ? <Login /> : <Navigate to="/"/>} 
               />
               <Route 
                 path="/register" 
-                element={!user ? <Register /> : <Navigate to="/" />}
+                element={!userAuth ? <Register /> : <Navigate to="/" />}
               />
               <Route 
                 path="/dashboard" 
-                element={user ? <Dashboard /> : <Navigate to="/login" />} 
+                element={userAuth ? <Dashboard /> : <Navigate to="/login" />} 
               />
               <Route path="/about" element={<About />} />
               <Route path="*" element={<NotFound />} />

@@ -1,13 +1,12 @@
 
 import './Login.css'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'; // Grid version 1
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useAuthentication } from "../../hooks/useAuthentication"
 import { account } from '../../appwrite/appwriteConfig';
 import { useNavigate } from "react-router-dom"
 import { AuthContextUser } from "../../context/AuthContextUser"
@@ -21,8 +20,7 @@ const Login = () => {
         passwordToShow: "",
         showPassword: false
     })
-    const { login, error: authError, loading_res } = useAuthentication();
-    const {userAuth, setUserAuth} = useContext(AuthContextUser)
+    const { userAuth, setUserAuth } = useContext(AuthContextUser)
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -30,15 +28,18 @@ const Login = () => {
       setLoading(true)
       setError("")
 
-      try{
-        await account.createEmailSession(email, password);
+      account.createEmailSession(email, password)
+      .then(() => {
+        console.log("alo1")
         setUserAuth(true)
+        console.log(userAuth)
         navigate("/")
-      } catch(error){
-        setUserAuth(false)
+      }, (error) => {
         console.log(error)
         console.log("Deu bigode ao logar, chefia")
-      }
+      })
+     
+      console.log("abuble")
       setLoading(false);
     }
 

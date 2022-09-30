@@ -1,17 +1,20 @@
 import styles from "./Home.module.css"
 
 import { useNavigate, Link } from "react-router-dom"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Box } from '@mui/system'
 import { Button } from "@mui/material"
 import { useFetchDocuments } from "../../hooks/useFetchDocuments"
 import PostDetail from "../../components/PostDetail"
+import { AuthContextUser } from "../../context/AuthContextUser"
+import { account } from "../../appwrite/appwriteConfig"
 
 // components
 
 const Home = () => {
   const [query, setQuery] = useState("")
   const { documents: posts, loading } = useFetchDocuments("posts");
+  const { setUserAuth } = useContext(AuthContextUser)
 
   const navigate = useNavigate()
 

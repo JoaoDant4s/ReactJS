@@ -10,18 +10,20 @@ import PostModal from '../../components/PostModal'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments'
 
 const Dashboard = () => {
-  const {user} = useAuthValue()
-  const uid = user.uid
+  //const {user} = useAuthValue()
+  //console.log(user)
+  //const uid = user.uid
 
-  //posts do usuario
-  const {documents: posts, loading} = useFetchDocuments("posts", null, uid)
-
+  // //posts do usuario
+  //const {documents: posts, loading} = useFetchDocuments("posts", null, uid)
+  
   return (
     <div className='dashboard-container'>
       <h2>Dashboard</h2>
       <p>Gerencie ou crie os seus posts</p>
       <PostModal />
-      {posts && posts.length === 0 ? (
+
+      {/* {posts && posts.length === 0 ? (
         <Box>
           <p>Não foram econtrados posts</p>
         </Box>
@@ -33,7 +35,7 @@ const Dashboard = () => {
 
       {posts && posts.map((post) => (
         <h3 key={post.title}>{post.title}</h3>
-      ))}
+      ))} */}
     </div>
   )
 }
