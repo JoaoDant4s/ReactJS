@@ -17,27 +17,23 @@ import SinglePost from './pages/SinglePost/SinglePost';
 import { AuthContextUser } from './context/AuthContextUser';
 import { account } from './appwrite/appwriteConfig';
 
-
 function App() {
   const [user] = useState(undefined)
   const { userAuth, setUserAuth } = useContext(AuthContextUser)
   const loadingUser = userAuth === null
 
   useEffect(() => {
-    setUserAuth(account.getSession('current'))
-    //console.log(account.getSession('current'))
-  }, [])
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     setUser(user);
-  //   });
-  // }, [auth]);
+    account.getSession('current').then(() => {
+      setUserAuth(true)
+      }, (error) => {
+        setUserAuth(false)
+      }
+    )
+  }, [setUserAuth])
 
   if(loadingUser) {
     return <p>Carregando...</p>;
   }
-
   return (
     <div className="App">
       <AuthProvider value={{user}}>

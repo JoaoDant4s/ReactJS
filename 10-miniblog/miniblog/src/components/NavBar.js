@@ -13,10 +13,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link, NavLink } from 'react-router-dom';
-import { useAuthentication } from '../hooks/useAuthentication';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContextUser } from '../context/AuthContextUser';
+import { account } from '../appwrite/appwriteConfig';
 
 
 const NavBar = (props) => {
@@ -24,7 +24,9 @@ const NavBar = (props) => {
   const navItems = ['Home', 'Novo post', 'Dashboard', 'Sobre', 'Sair', 'Context'];
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { userAuth } = useContext(AuthContextUser)
+  const { userAuth, setUserAuth } = useContext(AuthContextUser)
+  const navigate = useNavigate()
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -48,8 +50,19 @@ const NavBar = (props) => {
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
+  
 
-  const { logout } = useAuthentication()
+  const logout = () => {
+    console.log("User logged: " + userAuth)
+    setUserAuth(false)
+    account.deleteSession('current').then(() => {
+      console.log("User logged: " + userAuth)
+      navigate("/login")
+    }, (error) => {
+      console.log("nao deu certo chefia")
+      setUserAuth(true)
+    })
+  }
 
   return (
     <div>
@@ -110,11 +123,9 @@ const NavBar = (props) => {
             </NavLink>
             {userAuth && (
               <>
-                <Link to="/" className="o">
-                  <Button sx={{ color: '#000' }} onClick={logout}>
-                    Sair
-                  </Button>
-                </Link>
+                <Button sx={{ color: '#000' }} onClick={logout}>
+                  Sair
+                </Button>
               </>
             )}
             {/* <Button sx={{ color: '#000'}} onClick={() => console.log(userAuth)}>
