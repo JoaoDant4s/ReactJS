@@ -23,15 +23,19 @@ function App() {
   const loadingUser = userAuth === null
 
   useEffect(() => {
-    account.get().then((response) => {
-      setUserAuth(response)
-      console.log(response)
-      }, (error) => {
-        setUserAuth("")
-        console.log(error)
-      }
-    )
-  }, [setUserAuth])
+    if(localStorage.getItem("cookieFallback").includes("session")){
+      account.get().then((response) => {
+        setUserAuth(response)
+        console.log(response)
+        }, (error) => {
+          setUserAuth("")
+          console.log(error)
+        }
+      )
+    } else {
+      setUserAuth(false)
+    }
+  }, [])
   
   if(loadingUser) {
     return <p>Carregando...</p>;
