@@ -30,16 +30,15 @@ const Login = () => {
 
       account.createEmailSession(email, password)
       .then(() => {
-        console.log("alo1")
-        setUserAuth(true)
-        console.log(userAuth)
+        account.get().then((response) => {
+          setUserAuth(response)
+        }, () => {
+          console.log("deu bigode ao logar, chefia")
+        })
         navigate("/")
       }, (error) => {
         console.log(error)
-        console.log("Deu bigode ao logar, chefia")
       })
-     
-      console.log("abuble")
       setLoading(false);
     }
 

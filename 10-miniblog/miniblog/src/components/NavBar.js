@@ -53,10 +53,8 @@ const NavBar = (props) => {
   
 
   const logout = () => {
-    console.log("User logged: " + userAuth)
     setUserAuth(false)
     account.deleteSession('current').then(() => {
-      console.log("User logged: " + userAuth)
       navigate("/login")
     }, (error) => {
       console.log("nao deu certo chefia")

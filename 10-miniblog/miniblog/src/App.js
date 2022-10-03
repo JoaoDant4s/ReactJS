@@ -11,7 +11,7 @@ import Register from './pages/Register/Register';
 import { AuthProvider } from './context/AuthContext';
 
 //hooks
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useCallback } from "react"
 import Search from './pages/Search/Search';
 import SinglePost from './pages/SinglePost/SinglePost';
 import { AuthContextUser } from './context/AuthContextUser';
@@ -23,14 +23,16 @@ function App() {
   const loadingUser = userAuth === null
 
   useEffect(() => {
-    account.getSession('current').then(() => {
-      setUserAuth(true)
+    account.get().then((response) => {
+      setUserAuth(response)
+      console.log(response)
       }, (error) => {
-        setUserAuth(false)
+        setUserAuth("")
+        console.log(error)
       }
     )
   }, [setUserAuth])
-
+  
   if(loadingUser) {
     return <p>Carregando...</p>;
   }
