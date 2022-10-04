@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Button, Grid, Modal, TextField, Typography } from '@mui/material'
 import './PostModal.css' 
 import { Box } from '@mui/system'
 import { useInsertDocument } from '../hooks/useInsertDocument'
 import { useAuthValue } from '../context/AuthContext'
+import { databases } from '../appwrite/appwriteConfig'
+import { ID } from 'appwrite'
+import { AuthContextUser } from '../context/AuthContextUser'
 
 const PostModal = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -13,9 +16,9 @@ const PostModal = () => {
   const [tags, setTags] = useState([])
   const [formError, setError] = useState("")
   const [success, setSuccess] = useState(false)
-  const {user} = useAuthValue()
   const {insertDocument, response} = useInsertDocument("posts")
   const [isValidImage, setIsValidImage] = useState(false)
+  const { userAuth } = useContext(AuthContextUser)
 
   const clearState = () => {
     setIsModalVisible(false); 
@@ -34,26 +37,6 @@ const PostModal = () => {
       setError("A imagem precisa ser uma URL.");
       setUrlImage("")
     }
-
-    if(!failed) {
-      fetch(urlImage).then(res => {
-        if(res.status === 404) {
-          failed = true
-          setError("Erro ao analisar a imagem")
-        }
-        else {
-          console.log("res status: " + res.status)
-          setIsValidImage(true)
-          console.log("dentro do else: " + isValidImage)
-        }
-      })
-      .catch(err => {
-        setIsValidImage(false)
-        console.log("dentro do catch: " + isValidImage)
-        setError("A URL não é de uma imagem")
-        console.log(err)
-      })
-    }
     //criar array de tags
     const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase())
     //checar todos os valores
@@ -61,35 +44,36 @@ const PostModal = () => {
     if(!title || !urlImage || !tags || !content){
       setError("Por favor, preencha todos os campos.")
     }
-    console.log(isValidImage)
-    if(!failed && isValidImage){
+    //console.log(isValidImage)
+    console.log("failed: " + failed)
+    if(!failed){
       setError("")
-      // console.log({
-      //   title,
-      //   urlImage,
-      //   content,
-      //   tagsArray,
-      //   uid: user.uid,
-      //   createdBy: user.displayName
-      // })
 
-      insertDocument({
-        title,
-        urlImage,
-        content,
-        tagsArray,
-        uid: user.uid,
-        createdBy: user.displayName
+      databases.createDocument(
+        "633c0934d08e3e66ebc0",
+        "633c09d9994b86cae7fa",
+        ID.unique(),
+        {
+          Title: title,
+          urlImage,
+          content,
+          tagsArray,
+          userID: userAuth.$id,
+          createdBy: userAuth.name
+        }
+      ).then((response) => {
+        setTitle("")
+        setUrlImage("")
+        setContent("")
+        setTags([])
+        //navigate("/")
+        setSuccess(true)
+        setIsValidImage(false)
+      }).catch((error) => {
+        setError("Erro ao cadastrar informações...")
+        console.log(error)
       })
-      setTitle("")
-      setUrlImage("")
-      setContent("")
-      setTags([])
-      //navigate("/")
-      setSuccess(true)
-      setIsValidImage(false)
     }
-    //redirect to home page
   }
   return (
     <div>

@@ -20,7 +20,7 @@ const Login = () => {
         passwordToShow: "",
         showPassword: false
     })
-    const { userAuth, setUserAuth } = useContext(AuthContextUser)
+    const { setUserAuth } = useContext(AuthContextUser)
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -32,6 +32,8 @@ const Login = () => {
       .then(() => {
         account.get().then((response) => {
           setUserAuth(response)
+          console.log(response.name)
+          console.log(response.$id)
         }, () => {
           console.log("deu bigode ao logar, chefia")
         })
@@ -110,11 +112,11 @@ const Login = () => {
                         }}
                       />
                   </Grid>                   
-                    <Grid item>
-                        {!loading && <Button variant="outlined" type="submit">Entrar</Button>}
-                        {loading && <Button variant="outlined" type="submit" disabled>Aguarde...</Button>}
-                        {error && <p className="error">{error}</p>}
-                    </Grid>
+                  <Grid item>
+                      {!loading && <Button variant="outlined" type="submit">Entrar</Button>}
+                      {loading && <Button variant="outlined" type="submit" disabled>Aguarde...</Button>}
+                      {error && <p className="error">{error}</p>}
+                  </Grid>
                 </Grid>
             </Box>
         </Grid>
