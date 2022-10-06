@@ -2,8 +2,6 @@ import { useContext, useState } from 'react'
 import { Button, Grid, Modal, TextField, Typography } from '@mui/material'
 import './PostModal.css' 
 import { Box } from '@mui/system'
-import { useInsertDocument } from '../hooks/useInsertDocument'
-import { useAuthValue } from '../context/AuthContext'
 import { databases } from '../appwrite/appwriteConfig'
 import { ID } from 'appwrite'
 import { AuthContextUser } from '../context/AuthContextUser'
@@ -16,7 +14,6 @@ const PostModal = () => {
   const [tags, setTags] = useState([])
   const [formError, setError] = useState("")
   const [success, setSuccess] = useState(false)
-  const {insertDocument, response} = useInsertDocument("posts")
   const [isValidImage, setIsValidImage] = useState(false)
   const { userAuth } = useContext(AuthContextUser)
 
@@ -25,6 +22,7 @@ const PostModal = () => {
     setSuccess(false);
     setError("")
   }
+  
   const handleSubmit = (e) => {
     e.preventDefault()
     let failed = false
@@ -48,7 +46,6 @@ const PostModal = () => {
     console.log("failed: " + failed)
     if(!failed){
       setError("")
-
       databases.createDocument(
         "633c0934d08e3e66ebc0",
         "633c09d9994b86cae7fa",
@@ -162,10 +159,10 @@ const PostModal = () => {
                       value={tags}
                       onChange={(e) => setTags(e.target.value)}
                     />
-                    {(response.error || formError) && (
-                        <p className="error">{response.error || formError}</p>
+                    {(formError) && (
+                        <p className="error">{formError}</p>
                     )}
-                    {(!response.loading && success) && (
+                    {(success) && (
                         <p className='success'>Post cadastrado com sucesso</p>
                     )}
                   </Grid>
@@ -180,22 +177,22 @@ const PostModal = () => {
                 >
                   VOLTAR
                 </Button>
-                {!response.loading && <Button
+                <Button
                                 variant="contained"
                                 type="submit"
                                 className='button-submit'
                               >
                                 Cadastrar
-                              </Button>}
-                {response.loading && <Button
+                              </Button>
+                {/* <Button
                               variant="contained"
                               type="submit"
                               className='button-submit'
                               disabled
                             >
                               Aguarde...
-                            </Button>}
-                {response.error && <p className="error">{response.error}</p>}
+                            </Button> */}
+                {/* <p className="error">{response.error}</p> */}
               </Grid>
             </Box>
           </Box>        

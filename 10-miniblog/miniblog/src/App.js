@@ -11,11 +11,11 @@ import Register from './pages/Register/Register';
 import { AuthProvider } from './context/AuthContext';
 
 //hooks
-import { useState, useEffect, useContext, useCallback } from "react"
+import { useState, useEffect, useContext } from "react"
 import Search from './pages/Search/Search';
 import SinglePost from './pages/SinglePost/SinglePost';
 import { AuthContextUser } from './context/AuthContextUser';
-import { account } from './appwrite/appwriteConfig';
+import { account, client } from './appwrite/appwriteConfig';
 
 function App() {
   const [user] = useState(undefined)
@@ -40,33 +40,34 @@ function App() {
   if(loadingUser) {
     return <p>Carregando...</p>;
   }
+
   return (
     <div className="App">
-      <AuthProvider value={{user}}>
-        <BrowserRouter>
-          <NavBar />
-            <Routes className="rotas">
-              <Route path="/" element={<Home />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/posts/:id" element={<SinglePost />} />
-              <Route 
-                path="/login" 
-                element={!userAuth ? <Login /> : <Navigate to="/"/>} 
-              />
-              <Route 
-                path="/register" 
-                element={!userAuth ? <Register /> : <Navigate to="/" />}
-              />
-              <Route 
-                path="/dashboard" 
-                element={userAuth ? <Dashboard /> : <Navigate to="/login" />} 
-              />
-              <Route path="/about" element={<About />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          <Footer />
-        </BrowserRouter>
-      </AuthProvider>
+        <AuthProvider value={{user}}>
+          <BrowserRouter>
+            <NavBar />
+              <Routes className="rotas">
+                <Route path="/" element={<Home />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/posts/:id" element={<SinglePost />} />
+                <Route 
+                  path="/login" 
+                  element={!userAuth ? <Login /> : <Navigate to="/"/>} 
+                />
+                <Route 
+                  path="/register" 
+                  element={!userAuth ? <Register /> : <Navigate to="/" />}
+                />
+                <Route 
+                  path="/dashboard" 
+                  element={userAuth ? <Dashboard /> : <Navigate to="/login" />} 
+                />
+                <Route path="/about" element={<About />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            <Footer />
+          </BrowserRouter>
+        </AuthProvider>
     </div>
   );
 }

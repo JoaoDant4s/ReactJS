@@ -1,27 +1,41 @@
 import { Grid, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
 import './SinglePost.css'
 import { useParams } from "react-router-dom"
-import { useFetchDocument } from '../../hooks/useFetchDocument'
+import { databases } from '../../appwrite/appwriteConfig'
 
 const SinglePost = () => {
     const { id } = useParams()
-    const { document: post, loading } = useFetchDocument("posts", id)
-
+    const [ singlePost, setSinglePost ] = useState()
+    let loading = true
+    useEffect(() => {
+        databases.listDocuments(
+            "633c0934d08e3e66ebc0",
+            "633c09d9994b86cae7fa"
+          ).then((res) => {
+            setSinglePost(res.documents.find((postByID) => (
+                id === postByID.$id
+            )))
+            console.log(singlePost)
+          }, (err) => {
+            console.log(err)
+        })
+    }, [])
+    loading = false;
   return (
     <div className='post-container'>
         {loading && <p>Carregando post...</p>}
-        {post && (
+        {singlePost && (
             <div className='post-container'>
                 <Grid container md={9}>
                     <Grid item>
-                        <Typography variant='h2' fontWeight={400} className='title-post'>{post.title}</Typography>
-                        <img src={post.urlImage} alt={post.title} />
-                        <p>{post.content}</p>
+                        <Typography variant='h2' fontWeight={400} className='title-post'>{singlePost.Title}</Typography>
+                        <img src={singlePost.urlImage} alt={singlePost.Title} />
+                        <p>{singlePost.content}</p>
                         <h3 className='tags-title'>Este post trata sobre: </h3>
                         <Box className='tags-container'>
-                            {post.tagsArray.map((tag) => (
+                            {singlePost.tagsArray.map((tag) => (
                                 <p key={tag} className="tags"><span className='span-tags'>#</span>{tag}</p>
                             ))}
                         </Box>
@@ -29,6 +43,7 @@ const SinglePost = () => {
                 </Grid>
             </div>
         )}
+        {/* <p>bau bau</p> */}
     </div>
   )
 }

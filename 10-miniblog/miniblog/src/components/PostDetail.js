@@ -6,9 +6,9 @@ import './PostDetail.css'
 const PostDetail = ({post}) => {
   return (
     <div className='post_detail'>
-        <img src={post.urlImage} alt={post.title} />
+        <img src={post.urlImage} alt={post.Title} />
         <Box className='content-post-detail'>
-            <Typography variant='h2' fontWeight="bold" className='title'>{post.title}</Typography>
+            <Typography variant='h2' fontWeight="bold" className='title'>{post.Title}</Typography>
             <Typography variant='body1' className='createdBy'>{post.createdBy}</Typography>
         </Box>
         <Box className='tags'>
@@ -20,7 +20,7 @@ const PostDetail = ({post}) => {
             ))}
         </Box>
         <Box className="content-post-detail">
-            <NavLink to={`/posts/${post.id}`} className="btn btn-outline">Ler</NavLink>
+            <NavLink to={`/posts/${post.$id}`} className="btn btn-outline">Ler</NavLink>
         </Box>
     </div>
   )
