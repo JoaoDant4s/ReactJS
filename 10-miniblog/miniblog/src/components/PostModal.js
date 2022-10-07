@@ -47,8 +47,8 @@ const PostModal = () => {
     if(!failed){
       setError("")
       databases.createDocument(
-        "633c0934d08e3e66ebc0",
-        "633c09d9994b86cae7fa",
+        "brincouCom",
+        "aBrincadeira",
         ID.unique(),
         {
           Title: title,

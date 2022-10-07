@@ -29,19 +29,16 @@ const Login = () => {
       setLoading(true)
       setError("")
 
-      account.createEmailSession(email, password)
-      .then(() => {
-        account.get().then((response) => {
-          setUserAuth(response)
-          console.log(response.name)
-          console.log(response.$id)
-        }, () => {
-          console.log("deu bigode ao logar, chefia")
-        })
-        navigate("/")
-      }, (error) => {
-        console.log(error)
+      account.createOAuth2Session(
+        "microsoft",
+        "http://localhost:3000/",
+        "http://localhost:3000/login"
+      ).then(() => {
+        console.log("deu certo")
+      }, () => {
+        console.log("deu bigode ao logar, chefia")
       })
+
       setLoading(false);
     }
 
@@ -77,7 +74,7 @@ const Login = () => {
                 <Grid container flexDirection="column" rowSpacing={4}>
                     <Grid item>
                         <TextField
-                        required
+
                         id="standard-required2"
                         label="E-mail"
                         type="email"
@@ -89,7 +86,6 @@ const Login = () => {
                 </Grid >
                   <Grid item>
                       <TextField
-                      required
                       id="standard-required3"
                       autoComplete='password'
                       label="Senha"

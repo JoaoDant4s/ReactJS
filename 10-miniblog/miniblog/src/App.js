@@ -23,7 +23,7 @@ function App() {
   const loadingUser = userAuth === null
 
   useEffect(() => {
-    if(localStorage.getItem("cookieFallback").includes("session")){
+    if(localStorage.getItem("cookieFallback") && localStorage.getItem("cookieFallback").includes("session")){
       account.get().then((response) => {
         setUserAuth(response)
         console.log(response)

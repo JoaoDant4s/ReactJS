@@ -1,44 +1,58 @@
 import styles from "./Home.module.css"
 
 import { useNavigate, Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Box } from '@mui/system'
 import { Button } from "@mui/material"
 import PostDetail from "../../components/PostDetail"
-import { client, databases } from "../../appwrite/appwriteConfig"
+import { account, client, databases } from "../../appwrite/appwriteConfig"
+import { Query } from "appwrite"
+import { AuthContextUser } from "../../context/AuthContextUser"
 
 // components
 
 const Home = () => {
   const [query, setQuery] = useState("")
   const [posts, setPosts] = useState([]);
+  const { userAuth, setUserAuth } = useContext(AuthContextUser)
   let loading;
   const navigate = useNavigate()
 
   useEffect(() => {
+    
+    account.get().then((response) => {
+      setUserAuth(response)
+      console.log(response.name)
+      console.log(response.$id)
+    }, () => {
+      console.log("deu bigode ao logar, chefia")
+    })
+
     databases.listDocuments(
-      "633c0934d08e3e66ebc0",
-      "633c09d9994b86cae7fa"
+      "brincouCom",
+      "aBrincadeira",
+      [
+        Query.orderDesc('$createdAt'),
+      ]
     ).then((res) => {
-      console.log("deu certo3")
-      setPosts(res.documents.reverse());
-      console.log(posts)
+      setPosts(res.documents);
     }, (err) => {
       console.log(err)
     })
   }, [])
 
-  client.subscribe('databases.633c0934d08e3e66ebc0.collections.633c09d9994b86cae7fa.documents', response => {
+  client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', response => {
     databases.listDocuments(
-      "633c0934d08e3e66ebc0",
-      "633c09d9994b86cae7fa"
+      "brincouCom",
+      "aBrincadeira",
+      [
+        Query.orderDesc('$createdAt'),
+      ]
     ).then((res) => {
-      setPosts(res.documents.reverse());
-      console.log(posts)
+      setPosts(res.documents);
     }, (err) => {
       console.log(err)
     })
-    console.log(response)
   })
 
   const handleSubmit = (e) => {

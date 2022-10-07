@@ -11,13 +11,12 @@ const SinglePost = () => {
     let loading = true
     useEffect(() => {
         databases.listDocuments(
-            "633c0934d08e3e66ebc0",
-            "633c09d9994b86cae7fa"
+            "brincouCom",
+            "aBrincadeira",
           ).then((res) => {
             setSinglePost(res.documents.find((postByID) => (
                 id === postByID.$id
             )))
-            console.log(singlePost)
           }, (err) => {
             console.log(err)
         })
