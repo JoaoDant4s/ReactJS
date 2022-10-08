@@ -11,6 +11,20 @@
     color: rgb(184, 34, 34);
 }
 
+.bi-microsoft{
+    padding-right: 7px;
+    font-size: 20px;
+}
+.microsoft {
+    padding-left: 5px;
+}
+
+@media(min-width: 1200px){
+    .box-form {
+        width: 40%;
+    }
+}
+
 
 
 

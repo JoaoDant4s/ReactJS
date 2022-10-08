@@ -2,7 +2,7 @@ import styles from "./Home.module.css"
 
 import { useNavigate, Link } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
-import { Box } from '@mui/system'
+import { Box } from '@mui/material'
 import { Button } from "@mui/material"
 import PostDetail from "../../components/PostDetail"
 import { account, client, databases } from "../../appwrite/appwriteConfig"
@@ -15,19 +15,9 @@ const Home = () => {
   const [query, setQuery] = useState("")
   const [posts, setPosts] = useState([]);
   const { userAuth, setUserAuth } = useContext(AuthContextUser)
-  let loading;
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    
-    account.get().then((response) => {
-      setUserAuth(response)
-      console.log(response.name)
-      console.log(response.$id)
-    }, () => {
-      console.log("deu bigode ao logar, chefia")
-    })
-
+  const fetchDocuments = () => {
     databases.listDocuments(
       "brincouCom",
       "aBrincadeira",
@@ -39,20 +29,30 @@ const Home = () => {
     }, (err) => {
       console.log(err)
     })
+  }
+  useEffect(() => {
+    setLoading(true)
+    if(localStorage.getItem("cookieFallback") && localStorage.getItem("cookieFallback").includes("session")){
+      account.get().then((response) => {
+        setUserAuth(response)
+        console.log(response.name)
+        console.log(response.$id)
+      }, () => {
+        console.log("deu bigode ao tentar dar o get, chefia")
+      })
+    } 
+
+    fetchDocuments();
+    setLoading(false)
+    return () => {
+      unsubscribe()
+    }
   }, [])
 
-  client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', response => {
-    databases.listDocuments(
-      "brincouCom",
-      "aBrincadeira",
-      [
-        Query.orderDesc('$createdAt'),
-      ]
-    ).then((res) => {
-      setPosts(res.documents);
-    }, (err) => {
-      console.log(err)
-    })
+  const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
+    setLoading(true)
+    fetchDocuments();
+    setLoading(false)
   })
 
   const handleSubmit = (e) => {
@@ -75,7 +75,7 @@ const Home = () => {
       </form>
       <Box>
         {loading && <p>Carregando...</p>}
-        {posts && posts.length === 0 && (
+        {!loading && posts && posts.length === 0 && (
           <div className={styles.noposts}>
             <p>Nenhum post encontrado</p>
             <Link to="/dashboard">
@@ -87,7 +87,7 @@ const Home = () => {
             </Link>
           </div>
         )}
-        {posts && posts.map((post) => (
+        {!loading && posts && posts.map((post) => (
           <PostDetail key={post.$id} post={post} />
         ))}
       </Box>

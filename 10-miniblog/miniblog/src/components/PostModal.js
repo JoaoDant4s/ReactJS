@@ -74,7 +74,7 @@ const PostModal = () => {
   }
   return (
     <div>
-      <Button variant="contained" onClick={ () => setIsModalVisible(true) }>Criar post</Button>
+      <Button className="btn btn-dark" onClick={ () => setIsModalVisible(true) }>Criar post</Button>
       {isModalVisible ?
         <Modal
           open={isModalVisible}
@@ -178,12 +178,12 @@ const PostModal = () => {
                   VOLTAR
                 </Button>
                 <Button
-                                variant="contained"
-                                type="submit"
-                                className='button-submit'
-                              >
-                                Cadastrar
-                              </Button>
+                  variant="contained"
+                  type="submit"
+                  className='button-submit'
+                >
+                  Cadastrar
+                </Button>
                 {/* <Button
                               variant="contained"
                               type="submit"

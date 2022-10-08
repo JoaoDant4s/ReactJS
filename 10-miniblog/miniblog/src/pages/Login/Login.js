@@ -29,6 +29,24 @@ const Login = () => {
       setLoading(true)
       setError("")
 
+      account.createEmailSession(email, password)
+      .then(() => {
+        account.get().then((response) => {
+          setUserAuth(response)
+          console.log(response.name)
+          console.log(response.$id)
+        }, () => {
+          console.log("deu bigode ao logar, chefia")
+        })
+        navigate("/")
+      }, (error) => {
+        console.log(error)
+      })
+
+      setLoading(false);
+    }
+
+    const logWithMicrosoft = () => {
       account.createOAuth2Session(
         "microsoft",
         "http://localhost:3000/",
@@ -38,17 +56,7 @@ const Login = () => {
       }, () => {
         console.log("deu bigode ao logar, chefia")
       })
-
-      setLoading(false);
-    }
-
-    // useEffect(() => {
-
-    //     if(authError){
-    //         setError(authError)
-    //     }
-
-    // }, [authError]);
+    };
 
     const handleClickShowPassword = () => {
         setValues({
@@ -70,6 +78,7 @@ const Login = () => {
             autoComplete="off"
             sx={{width: "60%"}}
             onSubmit={handleSubmit}
+            className="box-form"
             >
                 <Grid container flexDirection="column" rowSpacing={4}>
                     <Grid item>
@@ -83,7 +92,7 @@ const Login = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                </Grid >
+                    </Grid >
                   <Grid item>
                       <TextField
                       id="standard-required3"
@@ -109,10 +118,20 @@ const Login = () => {
                         }}
                       />
                   </Grid>                   
-                  <Grid item>
-                      {!loading && <Button variant="outlined" type="submit">Entrar</Button>}
-                      {loading && <Button variant="outlined" type="submit" disabled>Aguarde...</Button>}
-                      {error && <p className="error">{error}</p>}
+                  <Grid container justifyContent="center" mt={3}>
+                    <Grid container item md={4} sm={8}>
+                        <Grid container item flexDirection="column">
+                          {!loading && <Button variant="outlined" type="submit">Entrar</Button>}
+                          {loading && <Button variant="outlined" type="submit" disabled>Aguarde...</Button>}
+                          {error && <p className="error">{error}</p>}
+                          <Box mt={2}>
+                            <Button id="aki" onClick={logWithMicrosoft}>
+                              <i className="bi bi-microsoft"></i>
+                              <span className="microsoft-login">microsoft</span>
+                            </Button>
+                          </Box>
+                        </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
             </Box>

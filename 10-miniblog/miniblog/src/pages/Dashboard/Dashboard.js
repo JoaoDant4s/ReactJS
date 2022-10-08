@@ -1,41 +1,89 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Grid, Modal, TextField, Typography } from '@mui/material'
 import './Dashboard.css' 
-import { Box } from '@mui/system'
-import { useAuthValue } from '../../context/AuthContext'
 import { Link, useNavigate } from "react-router-dom";
 import PostModal from '../../components/PostModal'
-
-import { useFetchDocuments } from '../../hooks/useFetchDocuments'
+import { Box } from '@mui/material'
+import { Query } from 'appwrite'
+import { client, databases } from '../../appwrite/appwriteConfig'
+import { AuthContextUser } from '../../context/AuthContextUser';
+import DeleteConfirmationModal from '../../components/DeleteConfirmationModal';
 
 const Dashboard = () => {
-  //const {user} = useAuthValue()
-  //console.log(user)
-  //const uid = user.uid
+  const { userAuth } = useContext(AuthContextUser)
+  const [ ownPosts, setOwnPosts ] = useState([])
 
-  // //posts do usuario
-  //const {documents: posts, loading} = useFetchDocuments("posts", null, uid)
-  
+  const fetchDocuments = () => {
+    databases.listDocuments(
+      "brincouCom",
+      "aBrincadeira",
+      [
+        Query.equal('createdBy', [`${userAuth.name}`]),
+        Query.orderDesc('$createdAt')
+      ]
+    ).then((res) => {
+      setOwnPosts(res.documents)
+    }, (err) => {
+      console.log(err)
+    })
+  }
+
+  const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
+    fetchDocuments();
+
+  })
+
+  useEffect(() => {
+    fetchDocuments();
+
+    return () => {
+      unsubscribe();
+    }
+  }, [])
+
   return (
-    <div className='dashboard-container'>
+    <Box className='dashboard-container'>
       <h2>Dashboard</h2>
-      <p>Gerencie ou crie os seus posts</p>
-      <PostModal />
-
-      {/* {posts && posts.length === 0 ? (
+      <Typography className='subtitle'>Gerencie ou crie os seus posts</Typography>
+      {ownPosts && ownPosts.length === 0 ? (
         <Box>
-          <p>Não foram econtrados posts</p>
+          <Typography variant="subtitle1">
+            Não foram econtrados posts
+          </Typography>
         </Box>
       ) : (
-        <Box>
-          <p>Tem posts!</p>
-        </Box>
+        <Grid container justifyContent="center" className="list-container">
+          <Grid container item md={8} sm={10}>
+            <Grid container item justifyContent="space-around" flexDirection="row">
+              <Typography variant='h6'>Título</Typography>
+              <Typography variant='h6'>Ações</Typography>
+            </Grid>
+            <Grid container item justifyContent="center" flexDirection="column">
+              <div className="post_row"></div>
+              {ownPosts && ownPosts.map((post) => (
+                <Grid container item justifyContent="center" alignItems="center" mt={2}>
+                  <Grid container item md={6} className="grid-title">
+                    <Typography variant="h5" key={post.content}>
+                      {post.Title}
+                    </Typography>
+                  </Grid>
+                  <Grid container item md={6} justifyContent="center" className="grid-buttons">
+                    <Link to={`/posts/${post.$id}`} className="btn btn-outline">
+                      Ver
+                    </Link>
+                    <Link to={`/posts/${post.$id}`} className="btn btn-outline">
+                      Editar
+                    </Link>
+                    <DeleteConfirmationModal document={post.$id} />
+                  </Grid>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
       )}
-
-      {posts && posts.map((post) => (
-        <h3 key={post.title}>{post.title}</h3>
-      ))} */}
-    </div>
+      <PostModal />
+    </Box>
   )
 }
 
