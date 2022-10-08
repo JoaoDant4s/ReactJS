@@ -20,14 +20,14 @@ const SinglePost = () => {
           }, (err) => {
             console.log(err)
         })
-    }, [])
+    }, [id])
     loading = false;
   return (
     <div className='post-container'>
         {loading && <p>Carregando post...</p>}
         {singlePost && (
             <div className='post-container'>
-                <Grid container md={9}>
+                <Grid container item md={9}>
                     <Grid item>
                         <Typography variant='h2' fontWeight={400} className='title-post'>{singlePost.Title}</Typography>
                         <img src={singlePost.urlImage} alt={singlePost.Title} />
@@ -42,7 +42,6 @@ const SinglePost = () => {
                 </Grid>
             </div>
         )}
-        {/* <p>bau bau</p> */}
     </div>
   )
 }

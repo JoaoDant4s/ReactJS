@@ -14,7 +14,7 @@ import { AuthContextUser } from "../../context/AuthContextUser"
 const Home = () => {
   const [query, setQuery] = useState("")
   const [posts, setPosts] = useState([]);
-  const { userAuth, setUserAuth } = useContext(AuthContextUser)
+  const { setUserAuth } = useContext(AuthContextUser)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const fetchDocuments = () => {
@@ -30,6 +30,13 @@ const Home = () => {
       console.log(err)
     })
   }
+  
+  const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
+    setLoading(true)
+    fetchDocuments();
+    setLoading(false)
+  })
+
   useEffect(() => {
     setLoading(true)
     if(localStorage.getItem("cookieFallback") && localStorage.getItem("cookieFallback").includes("session")){
@@ -47,13 +54,7 @@ const Home = () => {
     return () => {
       unsubscribe()
     }
-  }, [])
-
-  const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
-    setLoading(true)
-    fetchDocuments();
-    setLoading(false)
-  })
+  }, [setUserAuth, unsubscribe])
 
   const handleSubmit = (e) => {
     e.preventDefault()

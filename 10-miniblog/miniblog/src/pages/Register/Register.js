@@ -2,12 +2,10 @@ import './Register.css'
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Grid'; // Grid version 1
+import Grid from '@mui/material/Grid'; 
 import { Button, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useAuthentication } from "../../hooks/useAuthentication"
-//appwrite
 import { ID } from "appwrite"
 import { account } from '../../appwrite/appwriteConfig';
 import { useNavigate } from 'react-router-dom'
@@ -45,7 +43,7 @@ const Register = () => {
             console.log("aaaaaaaaa")
             account.createEmailSession(user.email, user.password);
             console.log("loguei")
-            navigate("/login") //usuario criado
+            navigate("/login") 
         }).catch(error => {
             console.log("nao consegui logar, craque")
             console.log(error);
@@ -57,13 +55,6 @@ const Register = () => {
         }
         setLoading(false);
     }
-    // useEffect(() => {
-
-    //     if(authError){
-    //         setError(authError)
-    //     }
-
-    // }, [authError]);
 
     const handleClickShowPassword = () => {
         setValues({

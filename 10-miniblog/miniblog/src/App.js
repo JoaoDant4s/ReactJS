@@ -15,7 +15,7 @@ import { useState, useEffect, useContext } from "react"
 import Search from './pages/Search/Search';
 import SinglePost from './pages/SinglePost/SinglePost';
 import { AuthContextUser } from './context/AuthContextUser';
-import { account, client } from './appwrite/appwriteConfig';
+import { account } from './appwrite/appwriteConfig';
 
 function App() {
   const [user] = useState(undefined)

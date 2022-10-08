@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react'
-import { Button, Grid, Modal, TextField, Typography } from '@mui/material'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { Grid, Typography } from '@mui/material'
 import './Dashboard.css' 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PostModal from '../../components/PostModal'
 import { Box } from '@mui/material'
 import { Query } from 'appwrite'
@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { userAuth } = useContext(AuthContextUser)
   const [ ownPosts, setOwnPosts ] = useState([])
 
-  const fetchDocuments = () => {
+  const fetchDocuments = useCallback(() => {
     databases.listDocuments(
       "brincouCom",
       "aBrincadeira",
@@ -26,7 +26,7 @@ const Dashboard = () => {
     }, (err) => {
       console.log(err)
     })
-  }
+  }, [userAuth.name])
 
   const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
     fetchDocuments();
@@ -39,7 +39,7 @@ const Dashboard = () => {
     return () => {
       unsubscribe();
     }
-  }, [])
+  }, [fetchDocuments, unsubscribe])
 
   return (
     <Box className='dashboard-container'>
