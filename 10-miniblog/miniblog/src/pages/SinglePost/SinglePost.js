@@ -20,7 +20,7 @@ const SinglePost = () => {
           }, (err) => {
             console.log(err)
         })
-    }, [id])
+    }, [])
     loading = false;
   return (
     <div className='post-container'>

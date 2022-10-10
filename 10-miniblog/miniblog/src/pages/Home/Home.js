@@ -30,8 +30,8 @@ const Home = () => {
       console.log(err)
     })
   }
-  
-  const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
+
+  const unsubscribeHome = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
     setLoading(true)
     fetchDocuments();
     setLoading(false)
@@ -52,9 +52,9 @@ const Home = () => {
     fetchDocuments();
     setLoading(false)
     return () => {
-      unsubscribe()
+      unsubscribeHome()
     }
-  }, [setUserAuth, unsubscribe])
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()

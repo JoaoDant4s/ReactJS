@@ -8,6 +8,7 @@ import { Query } from 'appwrite'
 import { client, databases } from '../../appwrite/appwriteConfig'
 import { AuthContextUser } from '../../context/AuthContextUser';
 import DeleteConfirmationModal from '../../components/DeleteConfirmationModal';
+import EditPostModal from '../../components/EditPostModal';
 
 const Dashboard = () => {
   const { userAuth } = useContext(AuthContextUser)
@@ -26,7 +27,7 @@ const Dashboard = () => {
     }, (err) => {
       console.log(err)
     })
-  }, [userAuth.name])
+  }, [])
 
   const unsubscribe = client.subscribe('databases.brincouCom.collections.aBrincadeira.documents', () => {
     fetchDocuments();
@@ -39,7 +40,7 @@ const Dashboard = () => {
     return () => {
       unsubscribe();
     }
-  }, [fetchDocuments, unsubscribe])
+  }, [])
 
   return (
     <Box className='dashboard-container'>
@@ -61,19 +62,17 @@ const Dashboard = () => {
             <Grid container item justifyContent="center" flexDirection="column">
               <div className="post_row"></div>
               {ownPosts && ownPosts.map((post) => (
-                <Grid container item justifyContent="center" alignItems="center" mt={2}>
+                <Grid container item justifyContent="center" alignItems="center" mt={2} key={post.$id}>
                   <Grid container item md={6} className="grid-title">
-                    <Typography variant="h5" key={post.content}>
+                    <Typography variant="h5">
                       {post.Title}
                     </Typography>
                   </Grid>
                   <Grid container item md={6} justifyContent="center" className="grid-buttons">
                     <Link to={`/posts/${post.$id}`} className="btn btn-outline">
-                      Ver
+                      VER
                     </Link>
-                    <Link to={`/posts/${post.$id}`} className="btn btn-outline">
-                      Editar
-                    </Link>
+                    <EditPostModal postId={post}/>
                     <DeleteConfirmationModal document={post.$id} />
                   </Grid>
                 </Grid>

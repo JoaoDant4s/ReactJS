@@ -140,7 +140,6 @@ const PostModal = () => {
                       required
                       id="standard-multiline-static"
                       placeholder="Insira o conteúdo do post"
-                      multiline
                       variant="standard"
                       sx={{width: "100%"}}
                       value={content}

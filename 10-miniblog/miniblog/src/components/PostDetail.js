@@ -12,8 +12,8 @@ const PostDetail = ({post}) => {
             <Typography variant='body1' className='createdBy'>{post.createdBy}</Typography>
         </Box>
         <Box className='tags'>
-            {post.tagsArray.map((tag) => (
-                <Typography variant='body1' key={tag}>
+            {post.tagsArray.map((tag, index) => (
+                <Typography variant='body1' key={index}>
                     <span>#</span>
                     {tag}
                 </Typography>

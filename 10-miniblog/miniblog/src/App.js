@@ -35,7 +35,7 @@ function App() {
     } else {
       setUserAuth(false)
     }
-  }, [setUserAuth])
+  }, [])
   
   if(loadingUser) {
     return <p>Carregando...</p>;
